@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:engineering_economics/formulas/f_when_p_given.dart';
 import 'package:engineering_economics/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:engineering_economics/formulas/simple_interest.dart';
@@ -30,8 +31,8 @@ class TimeValueMoney extends StatefulWidget {
 
 class _TimeValueMoneyState extends State<TimeValueMoney> {
   final List<String> _chapterTitles = [
-    "1. Simple Interest Calculator",
-    "2. Compound Interest Calculator",
+    "1. Simple Interest",
+    "2. Finding F when P given",
     "3. Annuity Calculator",
     "4. Amortization Calculator",
   ];
@@ -71,8 +72,7 @@ class _TimeValueMoneyState extends State<TimeValueMoney> {
                                 if (title == _chapterTitles[0]) {
                                   return SimpleIntrestCalculator();
                                 } else if (title == _chapterTitles[1]) {
-                                  // TODO: Define CompoundIntrestCalculator
-                                  // return CompoundIntrestCalculator();
+                                  return FWhenPGiven();
                                 } else if (title == _chapterTitles[2]) {
                                   // return AnnuityCalculator();
                                   // TODO: Define CompoundIntrestCalculator

@@ -3,19 +3,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class SimpleIntrestCalculator extends StatefulWidget {
-  const SimpleIntrestCalculator({super.key});
+class FWhenPGiven extends StatefulWidget {
+  const FWhenPGiven({super.key});
 
   @override
-  State<SimpleIntrestCalculator> createState() =>
-      _SimpleIntrestCalculatorState();
+  State<FWhenPGiven> createState() => _FWhenPGivenState();
 }
 
 var _formKey = GlobalKey<FormState>();
 
 const List<String> _currencies = <String>['Rupees', 'Dollars', 'Pounds'];
 
-class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
+class _FWhenPGivenState extends State<FWhenPGiven> {
   final _minimumPadding = 5.0;
   String _dropdownValue = _currencies.first;
 
@@ -29,7 +28,7 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Simple Interest Calculator"),
+        title: const Text("Calculate F when P is given"),
       ),
       body: Form(
         key: _formKey,
@@ -264,47 +263,11 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                   ],
                 ),
               ),
-              SizedBox(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: _minimumPadding * 5,
-                        top: _minimumPadding * 3,
-                      ),
-                      child: Text(
-                        'Results:',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      '''
-                        Simple Interest [I] = P × r × t
-                        Amount [A] = P ( 1 + rt )
-                        ''',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.blue[900]),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        right: _minimumPadding * 5,
-                        left: _minimumPadding * 3,
-                        top: _minimumPadding * 3,
-                      ),
-                      child: Text(
-                        displayResult,
-                        style: TextStyle(
-                          fontSize: 17,
-                        ),
-                      ),
-                    ),
-                  ],
+              Padding(
+                padding: EdgeInsets.all(_minimumPadding * 2),
+                child: Text(
+                  displayResult,
+                  style: TextStyle(fontSize: 20),
                 ),
               ),
             ],
@@ -328,36 +291,14 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
   }
 
   String _calculateTotalReturns() {
-    var sign = '';
     double principle = double.parse(principalController.text);
-    double roi = (double.parse(roiController.text)) / 100;
+    double roi = double.parse(roiController.text);
     double term = double.parse(termController.text);
-    switch (_dropdownValue) {
-      case 'Rupees':
-        sign = 'Rs.';
-        break;
-      case 'Dollars':
-        sign = '\$';
-        break;
-      case 'Pounds':
-        sign = '£';
-        break;
-    }
 
-    double totalAmount = principle * (1 + term * roi);
-    double totalInterest = (principle * roi * term);
+    double totalAmountPayable = principle + (principle * term * roi) / 100;
 
-    String result = '''
-        End Balance:  	$sign $totalAmount
-        Total Interest:  	$sign $totalInterest
-
-        Calculation steps:
-        Total Interest =	$sign $principle × $roi% × $term
-        =	$sign $totalInterest
-
-        End Balance =	$sign $principle + $totalInterest
-        =	$sign $totalAmount
-        ''';
+    String result =
+        "After $term years, your investment will be worth ${totalAmountPayable.toStringAsFixed(2)} $_dropdownValue.\n";
     return result;
   }
 
