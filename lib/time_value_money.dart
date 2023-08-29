@@ -4,6 +4,23 @@ import 'package:engineering_economics/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:engineering_economics/formulas/simple_interest.dart';
 
+//default widget -if nothing returned
+class DefaultWidget extends StatelessWidget {
+  const DefaultWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Default Screen'),
+      ),
+      body: Center(
+        child: Text('There is nothing to display :)'),
+      ),
+    );
+  }
+}
+
 class TimeValueMoney extends StatefulWidget {
   const TimeValueMoney({Key? key}) : super(key: key);
 
@@ -12,6 +29,13 @@ class TimeValueMoney extends StatefulWidget {
 }
 
 class _TimeValueMoneyState extends State<TimeValueMoney> {
+  final List<String> _chapterTitles = [
+    "1. Simple Interest Calculator",
+    "2. Compound Interest Calculator",
+    "3. Annuity Calculator",
+    "4. Amortization Calculator",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,26 +53,41 @@ class _TimeValueMoneyState extends State<TimeValueMoney> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: MediaQuery.of(context).size.width * 0.8,
+                width: MediaQuery.of(context).size.width * 0.80,
                 margin: const EdgeInsets.only(top: 50, left: 20),
                 child: Column(
-                  children: [
-                    SizedBox(
+                  children: _chapterTitles.map((title) {
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width,
                       child: RoundedButton(
-                          text: "1. Simple Interest Calculator",
-                          fontSize: 21,
-                          press: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
+                        alignMent: Alignment.centerLeft,
+                        text: title,
+                        fontSize: 18,
+                        press: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                if (title == _chapterTitles[0]) {
                                   return SimpleIntrestCalculator();
-                                },
-                              ),
-                            );
-                          }),
-                    ),
-                  ],
+                                } else if (title == _chapterTitles[1]) {
+                                  // TODO: Define CompoundIntrestCalculator
+                                  // return CompoundIntrestCalculator();
+                                } else if (title == _chapterTitles[2]) {
+                                  // return AnnuityCalculator();
+                                  // TODO: Define CompoundIntrestCalculator
+                                } else if (title == _chapterTitles[3]) {
+                                  // TODO: Define CompoundIntrestCalculator
+                                  // return AmortizationCalculator();
+                                }
+                                return DefaultWidget();
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
             ],

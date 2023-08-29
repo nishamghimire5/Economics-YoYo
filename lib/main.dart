@@ -61,8 +61,9 @@ class WelcomeScreen extends StatelessWidget {
             ),
             //wrap with widget #SizedBox
             SizedBox(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width * .85,
               child: RoundedButton(
+                  alignMent: Alignment.center,
                   text: "Chapter 1: Time Value of Money",
                   fontSize: 20,
                   press: () {

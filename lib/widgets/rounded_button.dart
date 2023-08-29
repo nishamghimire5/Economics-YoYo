@@ -6,6 +6,7 @@ class RoundedButton extends StatelessWidget {
   final String text;
   final VoidCallback press;
   final double fontSize;
+  final Alignment alignMent;
   final double verticalPadding;
 
   const RoundedButton({
@@ -14,6 +15,7 @@ class RoundedButton extends StatelessWidget {
     required this.press,
     this.fontSize = 16,
     this.verticalPadding = 16,
+    required this.alignMent,
   });
 
   @override
@@ -21,7 +23,7 @@ class RoundedButton extends StatelessWidget {
     return GestureDetector(
       onTap: press,
       child: Container(
-        alignment: Alignment.center,
+        alignment: alignMent,
         margin: EdgeInsets.symmetric(vertical: 16),
         padding: EdgeInsets.symmetric(
           vertical: verticalPadding,
