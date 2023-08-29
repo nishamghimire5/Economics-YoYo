@@ -21,9 +21,9 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
 
   var displayResult = '';
 
-  TextEditingController principalController = TextEditingController();
-  TextEditingController roiController = TextEditingController();
-  TextEditingController termController = TextEditingController();
+  final principalController = TextEditingController();
+  final roiController = TextEditingController();
+  final termController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -304,13 +304,14 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
   }
 
   void _reset() {
-    principalController.text = '';
-    roiController.text = '';
-    termController.text = '';
+    principalController.clear();
+    roiController.clear();
+    termController.clear();
     setState(() {
       _dropdownValue = _currencies.first;
       displayResult = '';
-      _formKey.currentState!.reset();
+      //no ideas how to implement the error msg reset and textfields reset simultaneusly
+      // _formKey.currentState!.reset();
     });
   }
 }
