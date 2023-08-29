@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SimpleIntrestCalculator extends StatefulWidget {
   const SimpleIntrestCalculator({super.key});
@@ -9,6 +10,8 @@ class SimpleIntrestCalculator extends StatefulWidget {
   State<SimpleIntrestCalculator> createState() =>
       _SimpleIntrestCalculatorState();
 }
+
+var _formKey = GlobalKey<FormState>();
 
 const List<String> _currencies = <String>['Rupees', 'Dollars', 'Pounds'];
 
@@ -28,13 +31,14 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
       appBar: AppBar(
         title: const Text("Simple Interest Calculator"),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/Bitmap.png'),
-            fit: BoxFit.cover,
-          ),
-        ),
+      body: Form(
+        key: _formKey,
+        // decoration: const BoxDecoration(
+        //   image: DecorationImage(
+        //     image: AssetImage('assets/images/Bitmap.png'),
+        //     fit: BoxFit.cover,
+        //   ),
+        // ),
         child: Container(
           // margin: EdgeInsets.all(_minimumPadding * 2),
           decoration: BoxDecoration(
@@ -50,11 +54,26 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                   top: _minimumPadding,
                   bottom: _minimumPadding,
                 ),
-                child: TextField(
+                child: TextFormField(
                   controller: principalController,
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter principal amount';
+                    }
+                    return null;
+                  },
+                  //for number only
                   keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
                   style: TextStyle(color: Colors.black87),
                   decoration: InputDecoration(
+                    errorStyle: TextStyle(
+                      color: Colors.red[900],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                         width: 3,
@@ -77,11 +96,26 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                   top: _minimumPadding,
                   bottom: _minimumPadding,
                 ),
-                child: TextField(
+                child: TextFormField(
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter rate';
+                    }
+                    return null;
+                  },
                   controller: roiController,
+                  //for number only
                   keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
                   style: TextStyle(color: Colors.black87),
                   decoration: InputDecoration(
+                    errorStyle: TextStyle(
+                      color: Colors.red[900],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                         width: 3,
@@ -107,11 +141,26 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      child: TextField(
+                      child: TextFormField(
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter time';
+                          }
+                          return null;
+                        },
                         controller: termController,
+                        //for number only
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         style: TextStyle(color: Colors.black87),
                         decoration: InputDecoration(
+                          errorStyle: TextStyle(
+                            color: Colors.red[900],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               width: 3,
@@ -183,7 +232,9 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                         ),
                         onPressed: () {
                           setState(() {
-                            displayResult = _calculateTotalReturns();
+                            if (_formKey.currentState?.validate() == true) {
+                              displayResult = _calculateTotalReturns();
+                            }
                           });
                         },
                         child: Text('Calculate'),
@@ -259,6 +310,7 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
     setState(() {
       _dropdownValue = _currencies.first;
       displayResult = '';
+      _formKey.currentState!.reset();
     });
   }
 }
