@@ -14,7 +14,14 @@ const List<String> _currencies = <String>['Rupees', 'Dollars', 'Pounds'];
 
 class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
   final _minimumPadding = 5.0;
-  String dropdownValue = _currencies.first;
+  String _dropdownValue = _currencies.first;
+
+  var displayResult = '';
+
+  TextEditingController principalController = TextEditingController();
+  TextEditingController roiController = TextEditingController();
+  TextEditingController termController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,6 +51,7 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                   bottom: _minimumPadding,
                 ),
                 child: TextField(
+                  controller: principalController,
                   keyboardType: TextInputType.number,
                   style: TextStyle(color: Colors.black87),
                   decoration: InputDecoration(
@@ -70,6 +78,7 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                   bottom: _minimumPadding,
                 ),
                 child: TextField(
+                  controller: roiController,
                   keyboardType: TextInputType.number,
                   style: TextStyle(color: Colors.black87),
                   decoration: InputDecoration(
@@ -99,6 +108,7 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                   children: <Widget>[
                     Expanded(
                       child: TextField(
+                        controller: termController,
                         keyboardType: TextInputType.number,
                         style: TextStyle(color: Colors.black87),
                         decoration: InputDecoration(
@@ -132,11 +142,11 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 12),
                           ),
-                          initialSelection: _currencies.first,
+                          initialSelection: _dropdownValue,
                           onSelected: (String? value) {
                             // This is called when the user selects an item.
                             setState(() {
-                              dropdownValue = value!;
+                              _dropdownValue = value!;
                             });
                           },
                           dropdownMenuEntries: _currencies
@@ -171,7 +181,11 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                           elevation: 20, // Elevation
                           shadowColor: Colors.amber, // Shadow Color
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            displayResult = _calculateTotalReturns();
+                          });
+                        },
                         child: Text('Calculate'),
                       ),
                     ),
@@ -190,7 +204,9 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                           elevation: 20, // Elevation
                           shadowColor: Colors.amber, // Shadow Color
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          _reset();
+                        },
                         child: Text('Reset'),
                       ),
                     ),
@@ -199,7 +215,10 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
               ),
               Padding(
                 padding: EdgeInsets.all(_minimumPadding * 2),
-                child: Text('Left'),
+                child: Text(
+                  displayResult,
+                  style: TextStyle(fontSize: 20),
+                ),
               ),
             ],
           ),
@@ -219,5 +238,27 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
       margin: EdgeInsets.all(_minimumPadding * 10),
       child: image,
     );
+  }
+
+  String _calculateTotalReturns() {
+    double principle = double.parse(principalController.text);
+    double roi = double.parse(roiController.text);
+    double term = double.parse(termController.text);
+
+    double totalAmountPayable = principle + (principle * term * roi) / 100;
+
+    String result =
+        "After $term years, your investment will be worth ${totalAmountPayable.toStringAsFixed(2)} $_dropdownValue.\n";
+    return result;
+  }
+
+  void _reset() {
+    principalController.text = '';
+    roiController.text = '';
+    termController.text = '';
+    setState(() {
+      _dropdownValue = _currencies.first;
+      displayResult = '';
+    });
   }
 }
