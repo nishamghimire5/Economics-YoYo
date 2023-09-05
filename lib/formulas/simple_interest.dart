@@ -16,6 +16,7 @@ var _formKey = GlobalKey<FormState>();
 const List<String> _currencies = <String>['Rupees', 'Dollars', 'Pounds'];
 
 class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
+  bool _showDataTable = false;
   final _minimumPadding = 5.0;
   String _dropdownValue = _currencies.first;
 
@@ -245,7 +246,9 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                         onPressed: () {
                           setState(() {
                             if (_formKey.currentState?.validate() == true) {
+                              FocusManager.instance.primaryFocus?.unfocus();
                               displayResult = _calculateTotalReturns();
+                              _showDataTable = true;
                             }
                           });
                         },
@@ -268,6 +271,7 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                           shadowColor: Colors.amber, // Shadow Color
                         ),
                         onPressed: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           _reset();
                         },
                         child: Text('Reset'),
@@ -286,7 +290,7 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                         top: _minimumPadding * 6,
                       ),
                       child: Text(
-                        'Results:',
+                        'Formula:',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -322,56 +326,62 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                         bottom: _minimumPadding * 5,
                         top: _minimumPadding * 1,
                       ),
-                      child: Text(
-                        'Schedule:',
-                        style: TextStyle(
-                          color: Colors.lightGreen,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                      child: Visibility(
+                        visible: _showDataTable,
+                        child: Text(
+                          'Schedule:',
+                          style: TextStyle(
+                            color: Colors.lightGreen,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
                     Center(
-                      child: DataTable(
-                        // dataRowMinHeight: 0, // Set dataRowHeight to 0
-                        dividerThickness: 3.0, // Set dividerThickness to 0
-                        columnSpacing: 60,
-                        columns: [
-                          DataColumn(
-                            label: const Text(
-                              'Year',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontStyle: FontStyle.italic,
-                                fontSize: 20,
-                                color: Colors.deepOrange,
+                      child: Visibility(
+                        visible: _showDataTable,
+                        child: DataTable(
+                          // dataRowMinHeight: 0, // Set dataRowHeight to 0
+                          dividerThickness: 3.0, // Set dividerThickness to 0
+                          columnSpacing: 60,
+                          columns: [
+                            DataColumn(
+                              label: const Text(
+                                'Year',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 20,
+                                  color: Colors.deepOrange,
+                                ),
                               ),
                             ),
-                          ),
-                          DataColumn(
-                            label: const Text(
-                              'Intrest',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontStyle: FontStyle.italic,
-                                fontSize: 20,
-                                color: Colors.deepOrange,
+                            DataColumn(
+                              label: const Text(
+                                'Intrest',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 20,
+                                  color: Colors.deepOrange,
+                                ),
                               ),
                             ),
-                          ),
-                          DataColumn(
-                            label: const Text(
-                              'Amount',
-                              style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.deepOrange,
+                            DataColumn(
+                              label: const Text(
+                                'Amount',
+                                style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.deepOrange,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                        rows: _buildTableRows(),
+                          ],
+                          rows: _buildTableRows(),
+                        ),
                       ),
                     ),
                   ],
@@ -409,7 +419,7 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
 
     for (int i = 1; i <= term; i++) {
       double amount = principle + (principle * roi * i) / 100;
-      double intrestValue = roi * principle;
+      double intrestValue = (roi * principle) / 100;
       rows.add(
         DataRow(
           cells: [
