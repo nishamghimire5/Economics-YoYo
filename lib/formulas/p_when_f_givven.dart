@@ -1,21 +1,22 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class SimpleIntrestCalculator extends StatefulWidget {
-  const SimpleIntrestCalculator({super.key});
+class PWhenFGiven extends StatefulWidget {
+  const PWhenFGiven({super.key});
 
   @override
-  State<SimpleIntrestCalculator> createState() =>
-      _SimpleIntrestCalculatorState();
+  State<PWhenFGiven> createState() => _PWhenFGivenState();
 }
 
 var _formKey = GlobalKey<FormState>();
 
 const List<String> _currencies = <String>['Rupees', 'Dollars', 'Pounds'];
 
-class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
+class _PWhenFGivenState extends State<PWhenFGiven> {
   bool _showDataTable = false;
   final _minimumPadding = 5.0;
   String _dropdownValue = _currencies.first;
@@ -25,12 +26,13 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
   final principalController = TextEditingController();
   final roiController = TextEditingController();
   final termController = TextEditingController();
+  // final nController = TextEditingController(text: '1');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Simple Interest Calculator"),
+        title: const Text("Calculate F when P is given"),
       ),
       body: Form(
         key: _formKey,
@@ -57,13 +59,9 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                 ),
                 child: TextFormField(
                   controller: principalController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter principal amount';
-                    }
-                    final double? amount = double.tryParse(value);
-                    if (amount == null) {
-                      return 'Please enter a valid number';
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter principal amount';
                     }
                     return null;
                   },
@@ -102,13 +100,9 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                   bottom: _minimumPadding,
                 ),
                 child: TextFormField(
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter rate';
-                    }
-                    final double? amount = double.tryParse(value);
-                    if (amount == null) {
-                      return 'Please enter a valid number';
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter rate';
                     }
                     return null;
                   },
@@ -140,6 +134,48 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                   ),
                 ),
               ),
+              // Padding(
+              //   padding: EdgeInsets.only(
+              //     right: _minimumPadding * 5,
+              //     left: _minimumPadding * 3,
+              //     top: _minimumPadding,
+              //     bottom: _minimumPadding,
+              //   ),
+              //   child: TextFormField(
+              //     validator: (String? value) {
+              //       if (value == null || value.isEmpty) {
+              //         return 'Enter interest credit frequency';
+              //       }
+              //       return null;
+              //     },
+              //     controller: nController,
+              //     //for number only
+              //     keyboardType: TextInputType.number,
+              //     inputFormatters: <TextInputFormatter>[
+              //       FilteringTextInputFormatter.digitsOnly
+              //     ],
+              //     style: TextStyle(color: Colors.black87),
+              //     decoration: InputDecoration(
+              //       errorStyle: TextStyle(
+              //         color: Colors.red[900],
+              //         fontWeight: FontWeight.bold,
+              //         fontSize: 15,
+              //       ),
+              //       enabledBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(
+              //           width: 3,
+              //           color: Colors.grey,
+              //         ),
+              //         borderRadius: BorderRadius.circular(50.0),
+              //       ),
+              //       contentPadding:
+              //           EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              //       labelText: 'Compounds per year (n)',
+              //       hintText: 'Times',
+              //       border: InputBorder.none,
+              //     ),
+              //   ),
+              // ),
               Padding(
                 padding: EdgeInsets.only(
                   right: _minimumPadding * 5,
@@ -151,13 +187,9 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                   children: <Widget>[
                     Expanded(
                       child: TextFormField(
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter principal amount';
-                          }
-                          final double? amount = double.tryParse(value);
-                          if (amount == null) {
-                            return 'Please enter a valid number';
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter time to invest';
                           }
                           return null;
                         },
@@ -300,8 +332,7 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                     ),
                     Text(
                       '''
-                        Simple Interest [I] = P × r × t
-                        Amount [A] = P ( 1 + rt )
+                        F = P(1 + r)^t
                         ''',
                       style: TextStyle(
                           fontSize: 18,
@@ -342,46 +373,49 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                     Center(
                       child: Visibility(
                         visible: _showDataTable,
-                        child: DataTable(
-                          // dataRowMinHeight: 0, // Set dataRowHeight to 0
-                          dividerThickness: 3.0, // Set dividerThickness to 0
-                          columnSpacing: 60,
-                          columns: [
-                            DataColumn(
-                              label: const Text(
-                                'Year',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 20,
-                                  color: Colors.deepOrange,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: DataTable(
+                            // dataRowMinHeight: 0, // Set dataRowHeight to 0
+                            dividerThickness: 3.0, // Set dividerThickness to 0
+                            columnSpacing: 60,
+                            columns: [
+                              DataColumn(
+                                label: const Text(
+                                  'Year',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 20,
+                                    color: Colors.deepOrange,
+                                  ),
                                 ),
                               ),
-                            ),
-                            DataColumn(
-                              label: const Text(
-                                'Intrest',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 20,
-                                  color: Colors.deepOrange,
+                              DataColumn(
+                                label: const Text(
+                                  'Intrest',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 20,
+                                    color: Colors.deepOrange,
+                                  ),
                                 ),
                               ),
-                            ),
-                            DataColumn(
-                              label: const Text(
-                                'Amount',
-                                style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.deepOrange,
+                              DataColumn(
+                                label: const Text(
+                                  'Amount',
+                                  style: TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.deepOrange,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                          rows: _buildTableRows(),
+                            ],
+                            rows: _buildTableRows(),
+                          ),
                         ),
                       ),
                     ),
@@ -399,6 +433,7 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
     double principle = double.tryParse(principalController.text) ?? 0.0;
     double roi = double.tryParse(roiController.text) ?? 0.0;
     double term = double.tryParse(termController.text) ?? 0.0;
+    // double n = double.tryParse(termController.text) ?? 1.0;
     // principle = 10;
     // roi = 10;
     // term = 10;
@@ -419,8 +454,9 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
     List<DataRow> rows = [];
 
     for (int i = 1; i <= term; i++) {
-      double amount = principle + (principle * roi * i) / 100;
-      double intrestValue = (roi * principle) / 100;
+      double amount = principle * pow((1 + (roi / 100)), i);
+      double interestValue =
+          (roi / 100) * principle * pow((1 + (roi / 100)), i - 1);
       rows.add(
         DataRow(
           cells: [
@@ -436,7 +472,7 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
             ),
             DataCell(
               Text(
-                '$sign $intrestValue',
+                '$sign ${interestValue.toStringAsFixed(2)}',
                 style: TextStyle(
                   color: Colors.indigo,
                   fontSize: 19,
@@ -446,7 +482,7 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
             ),
             DataCell(
               Text(
-                '$sign $amount',
+                '$sign ${amount.toStringAsFixed(2)}',
                 style: TextStyle(
                   color: Colors.indigo,
                   fontSize: 19,
@@ -458,7 +494,6 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
         ),
       );
     }
-
     return rows;
   }
 
@@ -492,19 +527,17 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
         break;
     }
 
-    double totalAmount = principle * (1 + term * roi);
-    double totalInterest = (principle * roi * term);
+    double totalAmount = principle * pow((1 + roi), term);
+    double totalInterest = totalAmount - principle;
 
     String result = '''
-        End Balance:  	$sign $totalAmount
-        Total Interest:  	$sign $totalInterest
+        End Balance:  	$sign ${totalAmount.toStringAsFixed(2)}
+        Total Interest:  	$sign ${totalInterest.toStringAsFixed(2)}
 
         Calculation steps:
-        Total Interest =	$sign $principle × $roi% × $term
-        =	$sign $totalInterest
 
-        End Balance =	$sign $principle + $totalInterest
-        =	$sign $totalAmount
+        Future Amount =	$sign $principle x (1 + $roi)^$term
+        =	$sign ${totalInterest.toStringAsFixed(2)}
         ''';
     return result;
   }

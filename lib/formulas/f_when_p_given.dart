@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -15,6 +17,7 @@ var _formKey = GlobalKey<FormState>();
 const List<String> _currencies = <String>['Rupees', 'Dollars', 'Pounds'];
 
 class _FWhenPGivenState extends State<FWhenPGiven> {
+  bool _showDataTable = false;
   final _minimumPadding = 5.0;
   String _dropdownValue = _currencies.first;
 
@@ -23,6 +26,7 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
   final principalController = TextEditingController();
   final roiController = TextEditingController();
   final termController = TextEditingController();
+  // final nController = TextEditingController(text: '1');
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +61,7 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
                   controller: principalController,
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter principal amount';
+                      return 'Enter principal amount';
                     }
                     return null;
                   },
@@ -98,7 +102,7 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
                 child: TextFormField(
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter rate';
+                      return 'Enter rate';
                     }
                     return null;
                   },
@@ -130,48 +134,48 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                  right: _minimumPadding * 5,
-                  left: _minimumPadding * 3,
-                  top: _minimumPadding,
-                  bottom: _minimumPadding,
-                ),
-                child: TextFormField(
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return 'You can enter how many times the interest get credited in a year';
-                    }
-                    return null;
-                  },
-                  controller: roiController,
-                  //for number only
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-                  style: TextStyle(color: Colors.black87),
-                  decoration: InputDecoration(
-                    errorStyle: TextStyle(
-                      color: Colors.red[900],
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 3,
-                        color: Colors.grey,
-                      ),
-                      borderRadius: BorderRadius.circular(50.0),
-                    ),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    labelText: 'Compounds per year (n)',
-                    hintText: 'Times',
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.only(
+              //     right: _minimumPadding * 5,
+              //     left: _minimumPadding * 3,
+              //     top: _minimumPadding,
+              //     bottom: _minimumPadding,
+              //   ),
+              //   child: TextFormField(
+              //     validator: (String? value) {
+              //       if (value == null || value.isEmpty) {
+              //         return 'Enter interest credit frequency';
+              //       }
+              //       return null;
+              //     },
+              //     controller: nController,
+              //     //for number only
+              //     keyboardType: TextInputType.number,
+              //     inputFormatters: <TextInputFormatter>[
+              //       FilteringTextInputFormatter.digitsOnly
+              //     ],
+              //     style: TextStyle(color: Colors.black87),
+              //     decoration: InputDecoration(
+              //       errorStyle: TextStyle(
+              //         color: Colors.red[900],
+              //         fontWeight: FontWeight.bold,
+              //         fontSize: 15,
+              //       ),
+              //       enabledBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(
+              //           width: 3,
+              //           color: Colors.grey,
+              //         ),
+              //         borderRadius: BorderRadius.circular(50.0),
+              //       ),
+              //       contentPadding:
+              //           EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              //       labelText: 'Compounds per year (n)',
+              //       hintText: 'Times',
+              //       border: InputBorder.none,
+              //     ),
+              //   ),
+              // ),
               Padding(
                 padding: EdgeInsets.only(
                   right: _minimumPadding * 5,
@@ -185,7 +189,7 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
                       child: TextFormField(
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter time you plan to invest';
+                            return 'Enter time to invest';
                           }
                           return null;
                         },
@@ -274,7 +278,9 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
                         onPressed: () {
                           setState(() {
                             if (_formKey.currentState?.validate() == true) {
+                              FocusManager.instance.primaryFocus?.unfocus();
                               displayResult = _calculateTotalReturns();
+                              _showDataTable = true;
                             }
                           });
                         },
@@ -297,6 +303,7 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
                           shadowColor: Colors.amber, // Shadow Color
                         ),
                         onPressed: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           _reset();
                         },
                         child: Text('Reset'),
@@ -305,11 +312,114 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(_minimumPadding * 2),
-                child: Text(
-                  displayResult,
-                  style: TextStyle(fontSize: 20),
+              SizedBox(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: _minimumPadding * 5,
+                        top: _minimumPadding * 6,
+                        bottom: _minimumPadding * 3,
+                      ),
+                      child: Text(
+                        'Formula:',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      '''
+                        F = P(1 + r)^t
+                        ''',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.blue[900]),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        right: _minimumPadding * 5,
+                        left: _minimumPadding * 3,
+                        top: _minimumPadding * 3,
+                      ),
+                      child: Text(
+                        displayResult,
+                        style: TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: _minimumPadding * 5,
+                        bottom: _minimumPadding * 5,
+                        top: _minimumPadding * 1,
+                      ),
+                      child: Visibility(
+                        visible: _showDataTable,
+                        child: Text(
+                          'Schedule:',
+                          style: TextStyle(
+                            color: Colors.lightGreen,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Visibility(
+                        visible: _showDataTable,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: DataTable(
+                            // dataRowMinHeight: 0, // Set dataRowHeight to 0
+                            dividerThickness: 3.0, // Set dividerThickness to 0
+                            columnSpacing: 60,
+                            columns: [
+                              DataColumn(
+                                label: const Text(
+                                  'Year',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 20,
+                                    color: Colors.deepOrange,
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: const Text(
+                                  'Intrest',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 20,
+                                    color: Colors.deepOrange,
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: const Text(
+                                  'Amount',
+                                  style: TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.deepOrange,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            rows: _buildTableRows(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -317,6 +427,74 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
         ),
       ),
     );
+  }
+
+  List<DataRow> _buildTableRows() {
+    double principle = double.tryParse(principalController.text) ?? 0.0;
+    double roi = double.tryParse(roiController.text) ?? 0.0;
+    double term = double.tryParse(termController.text) ?? 0.0;
+    // double n = double.tryParse(termController.text) ?? 1.0;
+    // principle = 10;
+    // roi = 10;
+    // term = 10;
+
+    var sign = '';
+    switch (_dropdownValue) {
+      case 'Rupees':
+        sign = 'Rs.';
+        break;
+      case 'Dollars':
+        sign = '\$';
+        break;
+      case 'Pounds':
+        sign = '£';
+        break;
+    }
+
+    List<DataRow> rows = [];
+
+    for (int i = 1; i <= term; i++) {
+      double amount = principle * pow((1 + (roi / 100)), i);
+      double interestValue =
+          (roi / 100) * principle * pow((1 + (roi / 100)), i - 1);
+      rows.add(
+        DataRow(
+          cells: [
+            DataCell(
+              Text(
+                i.toString(),
+                style: TextStyle(
+                  color: Colors.indigo,
+                  fontSize: 19,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+            DataCell(
+              Text(
+                '$sign ${interestValue.toStringAsFixed(2)}',
+                style: TextStyle(
+                  color: Colors.indigo,
+                  fontSize: 19,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+            DataCell(
+              Text(
+                '$sign ${amount.toStringAsFixed(2)}',
+                style: TextStyle(
+                  color: Colors.indigo,
+                  fontSize: 19,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    return rows;
   }
 
   Widget getImageAsset() {
@@ -333,14 +511,34 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
   }
 
   String _calculateTotalReturns() {
+    var sign = '';
     double principle = double.parse(principalController.text);
-    double roi = double.parse(roiController.text);
+    double roi = (double.parse(roiController.text)) / 100;
     double term = double.parse(termController.text);
+    switch (_dropdownValue) {
+      case 'Rupees':
+        sign = 'Rs.';
+        break;
+      case 'Dollars':
+        sign = '\$';
+        break;
+      case 'Pounds':
+        sign = '£';
+        break;
+    }
 
-    double totalAmountPayable = principle + (principle * term * roi) / 100;
+    double totalAmount = principle * pow((1 + roi), term);
+    double totalInterest = totalAmount - principle;
 
-    String result =
-        "After $term years, your investment will be worth ${totalAmountPayable.toStringAsFixed(2)} $_dropdownValue.\n";
+    String result = '''
+        End Balance:  	$sign ${totalAmount.toStringAsFixed(2)}
+        Total Interest:  	$sign ${totalInterest.toStringAsFixed(2)}
+
+        Calculation steps:
+
+        Future Amount =	$sign $principle x (1 + $roi)^$term
+        =	$sign ${totalInterest.toStringAsFixed(2)}
+        ''';
     return result;
   }
 
