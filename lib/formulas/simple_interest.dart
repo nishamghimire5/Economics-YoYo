@@ -56,9 +56,13 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                 ),
                 child: TextFormField(
                   controller: principalController,
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
+                  validator: (value) {
+                    if (value!.isEmpty) {
                       return 'Please enter principal amount';
+                    }
+                    final double? amount = double.tryParse(value);
+                    if (amount == null) {
+                      return 'Please enter a valid number';
                     }
                     return null;
                   },
@@ -97,9 +101,13 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                   bottom: _minimumPadding,
                 ),
                 child: TextFormField(
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
+                  validator: (value) {
+                    if (value!.isEmpty) {
                       return 'Please enter rate';
+                    }
+                    final double? amount = double.tryParse(value);
+                    if (amount == null) {
+                      return 'Please enter a valid number';
                     }
                     return null;
                   },
@@ -142,9 +150,13 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                   children: <Widget>[
                     Expanded(
                       child: TextFormField(
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter time';
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter principal amount';
+                          }
+                          final double? amount = double.tryParse(value);
+                          if (amount == null) {
+                            return 'Please enter a valid number';
                           }
                           return null;
                         },
@@ -271,7 +283,7 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                     Padding(
                       padding: EdgeInsets.only(
                         left: _minimumPadding * 5,
-                        top: _minimumPadding * 3,
+                        top: _minimumPadding * 6,
                       ),
                       child: Text(
                         'Results:',
@@ -304,6 +316,64 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                         ),
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: _minimumPadding * 5,
+                        bottom: _minimumPadding * 5,
+                        top: _minimumPadding * 1,
+                      ),
+                      child: Text(
+                        'Schedule:',
+                        style: TextStyle(
+                          color: Colors.lightGreen,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: DataTable(
+                        // dataRowMinHeight: 0, // Set dataRowHeight to 0
+                        dividerThickness: 3.0, // Set dividerThickness to 0
+                        columnSpacing: 60,
+                        columns: [
+                          DataColumn(
+                            label: const Text(
+                              'Year',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                                fontSize: 20,
+                                color: Colors.deepOrange,
+                              ),
+                            ),
+                          ),
+                          DataColumn(
+                            label: const Text(
+                              'Intrest',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                                fontSize: 20,
+                                color: Colors.deepOrange,
+                              ),
+                            ),
+                          ),
+                          DataColumn(
+                            label: const Text(
+                              'Amount',
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.deepOrange,
+                              ),
+                            ),
+                          ),
+                        ],
+                        rows: _buildTableRows(),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -312,6 +382,73 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
         ),
       ),
     );
+  }
+
+  List<DataRow> _buildTableRows() {
+    double principle = double.tryParse(principalController.text) ?? 0.0;
+    double roi = double.tryParse(roiController.text) ?? 0.0;
+    double term = double.tryParse(termController.text) ?? 0.0;
+    // principle = 10;
+    // roi = 10;
+    // term = 10;
+
+    var sign = '';
+    switch (_dropdownValue) {
+      case 'Rupees':
+        sign = 'Rs.';
+        break;
+      case 'Dollars':
+        sign = '\$';
+        break;
+      case 'Pounds':
+        sign = '£';
+        break;
+    }
+
+    List<DataRow> rows = [];
+
+    for (int i = 1; i <= term; i++) {
+      double amount = principle + (principle * roi * i) / 100;
+      double intrestValue = roi * principle;
+      rows.add(
+        DataRow(
+          cells: [
+            DataCell(
+              Text(
+                i.toString(),
+                style: TextStyle(
+                  color: Colors.indigo,
+                  fontSize: 19,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+            DataCell(
+              Text(
+                '$sign $intrestValue',
+                style: TextStyle(
+                  color: Colors.indigo,
+                  fontSize: 19,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+            DataCell(
+              Text(
+                '$sign $amount',
+                style: TextStyle(
+                  color: Colors.indigo,
+                  fontSize: 19,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return rows;
   }
 
   Widget getImageAsset() {
