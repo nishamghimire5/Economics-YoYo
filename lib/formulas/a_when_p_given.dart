@@ -23,7 +23,7 @@ class _AWhenPGivenState extends State<AWhenPGiven> {
 
   var displayResult = '';
 
-  final annuityController = TextEditingController();
+  final principleController = TextEditingController();
   final roiController = TextEditingController();
   final termController = TextEditingController();
   // final nController = TextEditingController(text: '1');
@@ -59,10 +59,10 @@ class _AWhenPGivenState extends State<AWhenPGiven> {
                   bottom: _minimumPadding,
                 ),
                 child: TextFormField(
-                  controller: annuityController,
+                  controller: principleController,
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Enter Annuity amount';
+                      return 'Enter Principle amount';
                     }
                     return null;
                   },
@@ -88,8 +88,8 @@ class _AWhenPGivenState extends State<AWhenPGiven> {
                     ),
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    labelText: 'Annuity Amount',
-                    hintText: 'Enter Annuity Amount e.g. 50000',
+                    labelText: 'Principle Amount',
+                    hintText: 'Enter Principle Amount e.g. 50000',
                     border: InputBorder.none,
                   ),
                 ),
@@ -337,7 +337,7 @@ class _AWhenPGivenState extends State<AWhenPGiven> {
                     ),
                     Center(
                       child: Text(
-                        'P = A [ { (1+i)^N - 1 } / { i( 1 + i )^N } ]',
+                        'A = P [ { i (1+i)^N } / { ( 1 + i )^N - 1 } ]',
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -438,7 +438,7 @@ class _AWhenPGivenState extends State<AWhenPGiven> {
   }
 
   List<DataRow> _buildTableRows() {
-    double annuity = double.tryParse(annuityController.text) ?? 0.0;
+    double principle = double.tryParse(principleController.text) ?? 0.0;
     double roi = double.tryParse(roiController.text) ?? 0.0;
     double term = double.tryParse(termController.text) ?? 0.0;
     // double n = double.tryParse(termController.text) ?? 1.0;
@@ -458,14 +458,10 @@ class _AWhenPGivenState extends State<AWhenPGiven> {
 
     List<DataRow> rows = [];
 
-    double presentAmount = annuity *
-        ((pow(1 + (roi / 100), term) - 1) /
-            ((roi / 100) * pow(1 + (roi / 100), term)));
-
     for (int i = 0; i <= term; i++) {
-      double amount = presentAmount * pow((1 + (roi / 100)), i);
+      double amount = principle * pow((1 + (roi / 100)), i);
       double interestValue =
-          (roi / 100) * presentAmount * pow((1 + (roi / 100)), i - 1);
+          (roi / 100) * principle * pow((1 + (roi / 100)), i - 1);
       rows.add(
         DataRow(
           cells: [
@@ -521,7 +517,7 @@ class _AWhenPGivenState extends State<AWhenPGiven> {
 
   String _calculateTotalReturns() {
     var sign = '';
-    double annuity = double.parse(annuityController.text);
+    double principle = double.parse(principleController.text);
     double roi = (double.parse(roiController.text)) / 100;
     double term = double.parse(termController.text);
     switch (_dropdownValue) {
@@ -536,27 +532,27 @@ class _AWhenPGivenState extends State<AWhenPGiven> {
         break;
     }
 
-    double presentAmount =
-        annuity * ((pow(1 + roi, term) - 1) / (roi * pow(1 + roi, term)));
-    // double totalInterest = -presentAmount + annuity;
+    double annuityAmount =
+        principle * (roi * pow(1 + roi, term)) / (pow(1 + roi, term) - 1);
+    // double totalInterest = -annuityAmount + principle;
 
     // Total Interest:  	$sign ${totalInterest.toStringAsFixed(2)}
     String result = '''
-        Present Sum Required:  	$sign ${presentAmount.toStringAsFixed(2)}
+        Annuity Sum Required:  	$sign ${annuityAmount.toStringAsFixed(2)}
 
         Calculation steps:
 
-        Present Amount = 
-        = $sign $annuity x 
-        [{(1 + $roi)^$term - 1} / {$roi x (1 + $roi)^$term}]
+        Annuity Amount = 
+        = $sign $principle x 
+        [{(1 + $roi)^$term x $roi} / {(1 + $roi)^$term - 1}]
 
-        =	$sign ${presentAmount.toStringAsFixed(2)}
+        =	$sign ${annuityAmount.toStringAsFixed(2)}
         ''';
     return result;
   }
 
   void _reset() {
-    annuityController.clear();
+    principleController.clear();
     roiController.clear();
     termController.clear();
     setState(() {

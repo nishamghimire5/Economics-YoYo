@@ -336,14 +336,14 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
                       ),
                     ),
                     Center(
-                      child: Text(
-                        '''
-                          P = F(1 + i)^-N
-                          ''',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.blue[900]),
+                      child: Center(
+                        child: Text(
+                          'P = F(1 + i)^-N',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.blue[900]),
+                        ),
                       ),
                     ),
                     Padding(
@@ -385,11 +385,22 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
                           child: DataTable(
                             // dataRowMinHeight: 0, // Set dataRowHeight to 0
                             dividerThickness: 3.0, // Set dividerThickness to 0
-                            columnSpacing: 190,
+                            columnSpacing: 60,
                             columns: [
                               DataColumn(
                                 label: const Text(
                                   'Year',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 20,
+                                    color: Colors.deepOrange,
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: const Text(
+                                  'Intrest',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontStyle: FontStyle.italic,
@@ -409,17 +420,6 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
                                   ),
                                 ),
                               ),
-                              // DataColumn(
-                              //   label: const Text(
-                              //     'Intrest',
-                              //     style: TextStyle(
-                              //       fontWeight: FontWeight.bold,
-                              //       fontStyle: FontStyle.italic,
-                              //       fontSize: 20,
-                              //       color: Colors.deepOrange,
-                              //     ),
-                              //   ),
-                              // ),
                             ],
                             rows: _buildTableRows(),
                           ),
@@ -458,18 +458,30 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
         break;
     }
 
+    double principle = future * pow((1 + roi / 100), (-term));
+
     List<DataRow> rows = [];
 
     for (int i = 0; i <= term; i++) {
-      double amount = future * pow((1 + (roi / 100)), -i);
-      // double interestValue =
-      //     (roi / 100) * future * pow((1 + (roi / 100)), i - 1);
+      double amount = principle * pow((1 + (roi / 100)), i);
+      double interestValue =
+          (roi / 100) * principle * pow((1 + (roi / 100)), i - 1);
       rows.add(
         DataRow(
           cells: [
             DataCell(
               Text(
-                (term - i).toStringAsFixed(0),
+                i.toString(),
+                style: TextStyle(
+                  color: Colors.indigo,
+                  fontSize: 19,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+            DataCell(
+              Text(
+                '$sign ${interestValue.toStringAsFixed(2)}',
                 style: TextStyle(
                   color: Colors.indigo,
                   fontSize: 19,
@@ -487,16 +499,6 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
                 ),
               ),
             ),
-            // DataCell(
-            //   Text(
-            //     '$sign ${interestValue.toStringAsFixed(2)}',
-            //     style: TextStyle(
-            //       color: Colors.indigo,
-            //       fontSize: 19,
-            //       fontStyle: FontStyle.italic,
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       );
