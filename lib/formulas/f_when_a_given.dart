@@ -32,7 +32,7 @@ class _FWhenAGivenState extends State<FWhenAGiven> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Finding F when P is given"),
+        title: const Text("Finding F when A is given"),
       ),
       body: Form(
         key: _formKey,
@@ -333,14 +333,16 @@ class _FWhenAGivenState extends State<FWhenAGiven> {
                         ),
                       ),
                     ),
-                    Text(
-                      '''
-                        F = A [ { ( 1 + i )^N - 1 } / i ]
-                        ''',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.blue[900]),
+                    Center(
+                      child: Text(
+                        '''
+                          F = A [ { ( 1 + i )^N - 1 } / i ]
+                          ''',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.blue[900]),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(

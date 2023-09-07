@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:engineering_economics/formulas/simple_interest.dart';
 
 import 'formulas/f_when_a_given.dart';
+import 'formulas/p_when_a_given.dart';
 import 'formulas/p_when_f_givven.dart';
 
 //default widget -if nothing returned
@@ -86,7 +87,7 @@ class _TimeValueMoneyState extends State<TimeValueMoney> {
                                 } else if (title == _chapterTitles[4]) {
                                   // return AWhenFGiven();
                                 } else if (title == _chapterTitles[5]) {
-                                  // return PWhenAGiven();
+                                  return PWhenAGiven();
                                 } else if (title == _chapterTitles[6]) {
                                   // return AWhenPGiven();
                                 }

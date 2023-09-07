@@ -334,14 +334,16 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
                         ),
                       ),
                     ),
-                    Text(
-                      '''
-                        P = F(1 + i)^-N
-                        ''',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.blue[900]),
+                    Center(
+                      child: Text(
+                        '''
+                          P = F(1 + i)^-N
+                          ''',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.blue[900]),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(
