@@ -5,6 +5,7 @@ import 'package:engineering_economics/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:engineering_economics/formulas/simple_interest.dart';
 
+import 'formulas/f_when_a_given.dart';
 import 'formulas/p_when_f_givven.dart';
 
 //default widget -if nothing returned
@@ -36,7 +37,10 @@ class _TimeValueMoneyState extends State<TimeValueMoney> {
     "1. Simple Interest",
     "2. Finding F when P given",
     "3. Finding P when F given",
-    "4. Amortization Calculator",
+    "4. Finding F when A given",
+    "5. Finding A when F given",
+    "6. Finding P when A given",
+    "7. Finding A when P given",
   ];
 
   @override
@@ -78,9 +82,15 @@ class _TimeValueMoneyState extends State<TimeValueMoney> {
                                 } else if (title == _chapterTitles[2]) {
                                   return PWhenFGiven();
                                 } else if (title == _chapterTitles[3]) {
-                                  // TODO: Define CompoundIntrestCalculator
-                                  // return AmortizationCalculator();
+                                  return FWhenAGiven();
+                                } else if (title == _chapterTitles[4]) {
+                                  // return AWhenFGiven();
+                                } else if (title == _chapterTitles[5]) {
+                                  // return PWhenAGiven();
+                                } else if (title == _chapterTitles[6]) {
+                                  // return AWhenPGiven();
                                 }
+
                                 return DefaultWidget();
                               },
                             ),
