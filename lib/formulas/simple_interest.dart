@@ -69,8 +69,9 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                   },
                   //for number only
                   keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d+\.?\d{0,2}')),
                   ],
                   style: TextStyle(color: Colors.black87),
                   decoration: InputDecoration(
@@ -115,8 +116,9 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                   controller: roiController,
                   //for number only
                   keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d+\.?\d{0,2}')),
                   ],
                   style: TextStyle(color: Colors.black87),
                   decoration: InputDecoration(
@@ -164,8 +166,9 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
                         controller: termController,
                         //for number only
                         keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'^\d+\.?\d{0,2}')),
                         ],
                         style: TextStyle(color: Colors.black87),
                         decoration: InputDecoration(

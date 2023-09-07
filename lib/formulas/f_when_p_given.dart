@@ -32,7 +32,7 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Calculate F when P is given"),
+        title: const Text("Finding F when P is given"),
       ),
       body: Form(
         key: _formKey,
@@ -61,14 +61,15 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
                   controller: principalController,
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Enter principal amount';
+                      return 'Enter Present amount';
                     }
                     return null;
                   },
                   //for number only
                   keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d+\.?\d{0,2}')),
                   ],
                   style: TextStyle(color: Colors.black87),
                   decoration: InputDecoration(
@@ -86,8 +87,8 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
                     ),
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    labelText: 'Principle',
-                    hintText: 'Enter Principle e.g. 50000',
+                    labelText: 'Present Amount',
+                    hintText: 'Enter present amount e.g. 50000',
                     border: InputBorder.none,
                   ),
                 ),
@@ -109,8 +110,9 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
                   controller: roiController,
                   //for number only
                   keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d+\.?\d{0,2}')),
                   ],
                   style: TextStyle(color: Colors.black87),
                   decoration: InputDecoration(
@@ -150,10 +152,10 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
               //     },
               //     controller: nController,
               //     //for number only
-              //     keyboardType: TextInputType.number,
-              //     inputFormatters: <TextInputFormatter>[
-              //       FilteringTextInputFormatter.digitsOnly
-              //     ],
+              //    keyboardType: TextInputType.number,
+              // inputFormatters: [
+              //   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+              // ],
               //     style: TextStyle(color: Colors.black87),
               //     decoration: InputDecoration(
               //       errorStyle: TextStyle(
@@ -196,8 +198,9 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
                         controller: termController,
                         //for number only
                         keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'^\d+\.?\d{0,2}')),
                         ],
                         style: TextStyle(color: Colors.black87),
                         decoration: InputDecoration(
@@ -332,7 +335,7 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
                     ),
                     Text(
                       '''
-                        F = P(1 + r)^t
+                        F = P(1 + i)^N
                         ''',
                       style: TextStyle(
                           fontSize: 18,
@@ -531,13 +534,13 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
     double totalInterest = totalAmount - principle;
 
     String result = '''
-        End Balance:  	$sign ${totalAmount.toStringAsFixed(2)}
+        End Future Balance:  	$sign ${totalAmount.toStringAsFixed(2)}
         Total Interest:  	$sign ${totalInterest.toStringAsFixed(2)}
 
         Calculation steps:
 
         Future Amount =	$sign $principle x (1 + $roi)^$term
-        =	$sign ${totalInterest.toStringAsFixed(2)}
+        =	$sign ${totalAmount.toStringAsFixed(2)}
         ''';
     return result;
   }

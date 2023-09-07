@@ -23,7 +23,7 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
 
   var displayResult = '';
 
-  final principalController = TextEditingController();
+  final futureController = TextEditingController();
   final roiController = TextEditingController();
   final termController = TextEditingController();
   // final nController = TextEditingController(text: '1');
@@ -32,7 +32,7 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Calculate F when P is given"),
+        title: const Text("Finding P when F is given"),
       ),
       body: Form(
         key: _formKey,
@@ -58,17 +58,18 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
                   bottom: _minimumPadding,
                 ),
                 child: TextFormField(
-                  controller: principalController,
+                  controller: futureController,
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Enter principal amount';
+                      return 'Enter Future amount';
                     }
                     return null;
                   },
                   //for number only
                   keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d+\.?\d{0,2}')),
                   ],
                   style: TextStyle(color: Colors.black87),
                   decoration: InputDecoration(
@@ -86,8 +87,8 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
                     ),
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    labelText: 'Principle',
-                    hintText: 'Enter Principle e.g. 50000',
+                    labelText: 'Future Amount',
+                    hintText: 'Enter Future Amount e.g. 50000',
                     border: InputBorder.none,
                   ),
                 ),
@@ -109,8 +110,9 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
                   controller: roiController,
                   //for number only
                   keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d+\.?\d{0,2}')),
                   ],
                   style: TextStyle(color: Colors.black87),
                   decoration: InputDecoration(
@@ -150,10 +152,11 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
               //     },
               //     controller: nController,
               //     //for number only
-              //     keyboardType: TextInputType.number,
-              //     inputFormatters: <TextInputFormatter>[
-              //       FilteringTextInputFormatter.digitsOnly
-              //     ],
+              //    keyboardType: TextInputType.number,
+              // inputFormatters: [
+              //   FilteringTextInputFormatter.allow(
+              //       RegExp(r'^\d+\.?\d{0,2}')),
+              // ],
               //     style: TextStyle(color: Colors.black87),
               //     decoration: InputDecoration(
               //       errorStyle: TextStyle(
@@ -196,8 +199,9 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
                         controller: termController,
                         //for number only
                         keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'^\d+\.?\d{0,2}')),
                         ],
                         style: TextStyle(color: Colors.black87),
                         decoration: InputDecoration(
@@ -332,7 +336,7 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
                     ),
                     Text(
                       '''
-                        F = P(1 + r)^t
+                        P = F(1 + i)^-N
                         ''',
                       style: TextStyle(
                           fontSize: 18,
@@ -378,22 +382,11 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
                           child: DataTable(
                             // dataRowMinHeight: 0, // Set dataRowHeight to 0
                             dividerThickness: 3.0, // Set dividerThickness to 0
-                            columnSpacing: 60,
+                            columnSpacing: 190,
                             columns: [
                               DataColumn(
                                 label: const Text(
                                   'Year',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontStyle: FontStyle.italic,
-                                    fontSize: 20,
-                                    color: Colors.deepOrange,
-                                  ),
-                                ),
-                              ),
-                              DataColumn(
-                                label: const Text(
-                                  'Intrest',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontStyle: FontStyle.italic,
@@ -413,6 +406,17 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
                                   ),
                                 ),
                               ),
+                              // DataColumn(
+                              //   label: const Text(
+                              //     'Intrest',
+                              //     style: TextStyle(
+                              //       fontWeight: FontWeight.bold,
+                              //       fontStyle: FontStyle.italic,
+                              //       fontSize: 20,
+                              //       color: Colors.deepOrange,
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                             rows: _buildTableRows(),
                           ),
@@ -430,11 +434,11 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
   }
 
   List<DataRow> _buildTableRows() {
-    double principle = double.tryParse(principalController.text) ?? 0.0;
+    double future = double.tryParse(futureController.text) ?? 0.0;
     double roi = double.tryParse(roiController.text) ?? 0.0;
     double term = double.tryParse(termController.text) ?? 0.0;
     // double n = double.tryParse(termController.text) ?? 1.0;
-    // principle = 10;
+    // future = 10;
     // roi = 10;
     // term = 10;
 
@@ -453,26 +457,16 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
 
     List<DataRow> rows = [];
 
-    for (int i = 1; i <= term; i++) {
-      double amount = principle * pow((1 + (roi / 100)), i);
-      double interestValue =
-          (roi / 100) * principle * pow((1 + (roi / 100)), i - 1);
+    for (int i = 0; i <= term; i++) {
+      double amount = future * pow((1 + (roi / 100)), -i);
+      // double interestValue =
+      //     (roi / 100) * future * pow((1 + (roi / 100)), i - 1);
       rows.add(
         DataRow(
           cells: [
             DataCell(
               Text(
                 i.toString(),
-                style: TextStyle(
-                  color: Colors.indigo,
-                  fontSize: 19,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-            ),
-            DataCell(
-              Text(
-                '$sign ${interestValue.toStringAsFixed(2)}',
                 style: TextStyle(
                   color: Colors.indigo,
                   fontSize: 19,
@@ -490,6 +484,16 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
                 ),
               ),
             ),
+            // DataCell(
+            //   Text(
+            //     '$sign ${interestValue.toStringAsFixed(2)}',
+            //     style: TextStyle(
+            //       color: Colors.indigo,
+            //       fontSize: 19,
+            //       fontStyle: FontStyle.italic,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       );
@@ -512,7 +516,7 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
 
   String _calculateTotalReturns() {
     var sign = '';
-    double principle = double.parse(principalController.text);
+    double future = double.parse(futureController.text);
     double roi = (double.parse(roiController.text)) / 100;
     double term = double.parse(termController.text);
     switch (_dropdownValue) {
@@ -527,23 +531,23 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
         break;
     }
 
-    double totalAmount = principle * pow((1 + roi), term);
-    double totalInterest = totalAmount - principle;
+    double totalAmount = future * pow((1 + roi), (-term));
+    // double totalInterest = -totalAmount + future;
 
+    // Total Interest:  	$sign ${totalInterest.toStringAsFixed(2)}
     String result = '''
-        End Balance:  	$sign ${totalAmount.toStringAsFixed(2)}
-        Total Interest:  	$sign ${totalInterest.toStringAsFixed(2)}
+        Present Sum Required:  	$sign ${totalAmount.toStringAsFixed(2)}
 
         Calculation steps:
 
-        Future Amount =	$sign $principle x (1 + $roi)^$term
-        =	$sign ${totalInterest.toStringAsFixed(2)}
+        Present Amount =	$sign $future x (1 + $roi)^-$term
+        =	$sign ${totalAmount.toStringAsFixed(2)}
         ''';
     return result;
   }
 
   void _reset() {
-    principalController.clear();
+    futureController.clear();
     roiController.clear();
     termController.clear();
     setState(() {
