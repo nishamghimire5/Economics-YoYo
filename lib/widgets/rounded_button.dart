@@ -30,13 +30,13 @@ class RoundedButton extends StatelessWidget {
           horizontal: 30,
         ),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.orange[100],
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
-              offset: Offset(0, 15),
-              blurRadius: 30,
-              color: Color(0xFF666666).withOpacity(.11),
+              offset: Offset(0, 5),
+              blurRadius: 10,
+              color: Colors.grey.withOpacity(.5),
             ),
           ],
         ),

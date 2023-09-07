@@ -50,16 +50,22 @@ class WelcomeScreen extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: 'Economics ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.amber[900],
+                    ),
                   ),
                   TextSpan(
-                      text: 'yoyo.',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ))
+                    text: 'yoyo.',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.teal[800],
+                    ),
+                  ),
                 ],
               ),
             ),
-            //wrap with widget #SizedBox
+            const SizedBox(height: 16),
             SizedBox(
               width: MediaQuery.of(context).size.width * .85,
               child: RoundedButton(
@@ -76,7 +82,38 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     );
                   }),
-            )
+            ),
+            const SizedBox(height: 360),
+            Column(
+              children: [
+                Text(
+                  'Developed By',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Container(
+                  height: 2,
+                  width: 60,
+                  color: Colors.pink[900],
+                ),
+                SizedBox(height: 8),
+                RichText(
+                  text: TextSpan(
+                    text: 'TheNisham',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.pink[900],
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
