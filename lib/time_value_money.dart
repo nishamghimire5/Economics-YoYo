@@ -5,6 +5,7 @@ import 'package:engineering_economics/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:engineering_economics/formulas/simple_interest.dart';
 
+import 'formulas/a_when_p_given.dart';
 import 'formulas/f_when_a_given.dart';
 import 'formulas/p_when_a_given.dart';
 import 'formulas/p_when_f_givven.dart';
@@ -17,10 +18,8 @@ class DefaultWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Default Screen'),
-      ),
-      body: Center(
-        child: Text('There is nothing to display :)'),
+        title: Text('Home Page'),
+        backgroundColor: Colors.amber,
       ),
     );
   }
@@ -89,7 +88,7 @@ class _TimeValueMoneyState extends State<TimeValueMoney> {
                                 } else if (title == _chapterTitles[5]) {
                                   return PWhenAGiven();
                                 } else if (title == _chapterTitles[6]) {
-                                  // return AWhenPGiven();
+                                  return AWhenPGiven();
                                 }
 
                                 return DefaultWidget();

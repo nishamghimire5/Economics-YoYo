@@ -33,6 +33,7 @@ class _FWhenAGivenState extends State<FWhenAGiven> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Finding F when A is given"),
+        backgroundColor: Colors.amber,
       ),
       body: Form(
         key: _formKey,

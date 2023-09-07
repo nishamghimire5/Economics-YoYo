@@ -31,6 +31,7 @@ class _SimpleIntrestCalculatorState extends State<SimpleIntrestCalculator> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Simple Interest Calculator"),
+        backgroundColor: Colors.amber,
       ),
       body: Form(
         key: _formKey,
