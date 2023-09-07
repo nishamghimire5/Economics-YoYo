@@ -466,7 +466,7 @@ class _PWhenFGivenState extends State<PWhenFGiven> {
           cells: [
             DataCell(
               Text(
-                i.toString(),
+                (term - i).toStringAsFixed(0),
                 style: TextStyle(
                   color: Colors.indigo,
                   fontSize: 19,
