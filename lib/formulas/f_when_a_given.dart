@@ -334,14 +334,14 @@ class _FWhenAGivenState extends State<FWhenAGiven> {
                       ),
                     ),
                     Center(
-                      child: Text(
-                        '''
-                          F = A [ { ( 1 + i )^N - 1 } / i ]
-                          ''',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.blue[900]),
+                      child: Center(
+                        child: Text(
+                          'F = A [ { ( 1 + i )^N - 1 } / i ]',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.blue[900]),
+                        ),
                       ),
                     ),
                     Padding(
@@ -384,7 +384,7 @@ class _FWhenAGivenState extends State<FWhenAGiven> {
                           child: DataTable(
                             // dataRowMinHeight: 0, // Set dataRowHeight to 0
                             dividerThickness: 3.0, // Set dividerThickness to 0
-                            columnSpacing: 190,
+                            columnSpacing: 60,
                             columns: [
                               DataColumn(
                                 label: const Text(
@@ -397,17 +397,17 @@ class _FWhenAGivenState extends State<FWhenAGiven> {
                                   ),
                                 ),
                               ),
-                              // DataColumn(
-                              //   label: const Text(
-                              //     'Intrest',
-                              //     style: TextStyle(
-                              //       fontWeight: FontWeight.bold,
-                              //       fontStyle: FontStyle.italic,
-                              //       fontSize: 20,
-                              //       color: Colors.deepOrange,
-                              //     ),
-                              //   ),
-                              // ),
+                              DataColumn(
+                                label: const Text(
+                                  'Intrest',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 20,
+                                    color: Colors.deepOrange,
+                                  ),
+                                ),
+                              ),
                               DataColumn(
                                 label: const Text(
                                   'Amount',
@@ -459,11 +459,14 @@ class _FWhenAGivenState extends State<FWhenAGiven> {
 
     List<DataRow> rows = [];
 
-    for (int i = 1; i <= term; i++) {
-      double futureValue =
-          annuity * ((pow(1 + roi / 100, term - i + 1) - 1) / (roi / 100));
-      // double interestValue =
-      //     futureValue - (annuity * (pow(1 + roi / 100, term - i)));
+    double presentAmount = annuity *
+        ((pow(1 + (roi / 100), term) - 1) /
+            ((roi / 100) * pow(1 + (roi / 100), term)));
+
+    for (int i = 0; i <= term; i++) {
+      double amount = presentAmount * pow((1 + (roi / 100)), i);
+      double interestValue =
+          (roi / 100) * presentAmount * pow((1 + (roi / 100)), i - 1);
       rows.add(
         DataRow(
           cells: [
@@ -477,19 +480,19 @@ class _FWhenAGivenState extends State<FWhenAGiven> {
                 ),
               ),
             ),
-            // DataCell(
-            //   Text(
-            //     '$sign ${interestValue.toStringAsFixed(2)}',
-            //     style: TextStyle(
-            //       color: Colors.indigo,
-            //       fontSize: 19,
-            //       fontStyle: FontStyle.italic,
-            //     ),
-            //   ),
-            // ),
             DataCell(
               Text(
-                '$sign ${futureValue.toStringAsFixed(2)}',
+                '$sign ${interestValue.toStringAsFixed(2)}',
+                style: TextStyle(
+                  color: Colors.indigo,
+                  fontSize: 19,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+            DataCell(
+              Text(
+                '$sign ${amount.toStringAsFixed(2)}',
                 style: TextStyle(
                   color: Colors.indigo,
                   fontSize: 19,
