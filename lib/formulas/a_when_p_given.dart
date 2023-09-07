@@ -538,7 +538,7 @@ class _AWhenPGivenState extends State<AWhenPGiven> {
 
     // Total Interest:  	$sign ${totalInterest.toStringAsFixed(2)}
     String result = '''
-        Annuity Sum Required:  	$sign ${annuityAmount.toStringAsFixed(2)}
+        Annuity Required:  	$sign ${annuityAmount.toStringAsFixed(2)}
 
         Calculation steps:
 
