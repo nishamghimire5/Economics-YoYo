@@ -36,12 +36,12 @@ class TimeValueMoney extends StatefulWidget {
 class _TimeValueMoneyState extends State<TimeValueMoney> {
   final List<String> _chapterTitles = [
     "1. Simple Interest",
-    "2. Finding F when P given",
-    "3. Finding P when F given",
-    "4. Finding F when A given",
-    "5. Finding A when F given",
-    "6. Finding P when A given",
-    "7. Finding A when P given",
+    "2. ( F | P , I % , N )",
+    "3. ( P | F , I % , N )",
+    "4. ( F | A , I % , N )",
+    "5. ( A | F , I % , N )",
+    "6. ( P | A , I % , N )",
+    "7. ( A | P , I % , N )",
   ];
 
   @override
