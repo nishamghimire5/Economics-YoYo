@@ -385,7 +385,7 @@ class _FWhenAGivenState extends State<FWhenAGiven> {
                           child: DataTable(
                             // dataRowMinHeight: 0, // Set dataRowHeight to 0
                             dividerThickness: 3.0, // Set dividerThickness to 0
-                            columnSpacing: 60,
+                            columnSpacing: 40,
                             columns: [
                               DataColumn(
                                 label: const Text(
@@ -460,14 +460,15 @@ class _FWhenAGivenState extends State<FWhenAGiven> {
 
     List<DataRow> rows = [];
 
-    double presentAmount = annuity *
-        ((pow(1 + (roi / 100), term) - 1) /
-            ((roi / 100) * pow(1 + (roi / 100), term)));
+    double increasingAmount = 0;
+    double interestValue = 0;
 
-    for (int i = 0; i <= term; i++) {
-      double amount = presentAmount * pow((1 + (roi / 100)), i);
-      double interestValue =
-          (roi / 100) * presentAmount * pow((1 + (roi / 100)), i - 1);
+    for (int i = 1; i <= term; i++) {
+      increasingAmount += annuity;
+      if (i != term) {
+        interestValue = increasingAmount * (roi / 100);
+        increasingAmount += interestValue;
+      }
       rows.add(
         DataRow(
           cells: [
@@ -493,7 +494,7 @@ class _FWhenAGivenState extends State<FWhenAGiven> {
             ),
             DataCell(
               Text(
-                '$sign ${amount.toStringAsFixed(2)}',
+                '$sign ${increasingAmount.toStringAsFixed(2)}',
                 style: TextStyle(
                   color: Colors.indigo,
                   fontSize: 19,
