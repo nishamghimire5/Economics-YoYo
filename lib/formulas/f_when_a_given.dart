@@ -463,9 +463,15 @@ class _FWhenAGivenState extends State<FWhenAGiven> {
     double increasingAmount = 0;
     double interestValue = 0;
 
-    for (int i = 1; i <= term; i++) {
+    for (int i = 0; i <= term; i++) {
       increasingAmount += annuity;
-      if (i != term) {
+      if (i == 0) {
+        interestValue = 0;
+      }
+      if (i == 1) {
+        increasingAmount = annuity;
+      }
+      if (i != 0 && i != term) {
         interestValue = increasingAmount * (roi / 100);
         increasingAmount += interestValue;
       }
