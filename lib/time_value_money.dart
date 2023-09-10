@@ -8,6 +8,7 @@ import 'package:engineering_economics/formulas/simple_interest.dart';
 import 'formulas/a_when_f_given.dart';
 import 'formulas/a_when_p_given.dart';
 import 'formulas/f_when_a_given.dart';
+import 'formulas/intrest_calculators.dart';
 import 'formulas/p_when_a_given.dart';
 import 'formulas/p_when_f_givven.dart';
 
@@ -42,6 +43,7 @@ class _TimeValueMoneyState extends State<TimeValueMoney> {
     "5. ( A | F , I % , N )",
     "6. ( P | A , I % , N )",
     "7. ( A | P , I % , N )",
+    "8. Intrest Calculator",
   ];
 
   @override
@@ -90,6 +92,8 @@ class _TimeValueMoneyState extends State<TimeValueMoney> {
                                   return PWhenAGiven();
                                 } else if (title == _chapterTitles[6]) {
                                   return AWhenPGiven();
+                                } else if (title == _chapterTitles[7]) {
+                                  return InterestCalculator();
                                 }
 
                                 return DefaultWidget();
