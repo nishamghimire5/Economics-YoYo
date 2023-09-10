@@ -456,12 +456,27 @@ class _AWhenPGivenState extends State<AWhenPGiven> {
         break;
     }
 
+    double annuity = principle *
+        ((roi / 100) * pow(1 + (roi / 100), term)) /
+        (pow(1 + (roi / 100), term) - 1);
+
     List<DataRow> rows = [];
 
+    double increasingAmount = 0;
+    double interestValue = 0;
+
     for (int i = 0; i <= term; i++) {
-      double amount = principle * pow((1 + (roi / 100)), i);
-      double interestValue =
-          (roi / 100) * principle * pow((1 + (roi / 100)), i - 1);
+      increasingAmount += annuity;
+      if (i == 0) {
+        interestValue = 0;
+      }
+      if (i == 1) {
+        increasingAmount = annuity;
+      }
+      if (i != 0 && i != term) {
+        interestValue = increasingAmount * (roi / 100);
+        increasingAmount += interestValue;
+      }
       rows.add(
         DataRow(
           cells: [
@@ -487,7 +502,7 @@ class _AWhenPGivenState extends State<AWhenPGiven> {
             ),
             DataCell(
               Text(
-                '$sign ${amount.toStringAsFixed(2)}',
+                '$sign ${increasingAmount.toStringAsFixed(2)}',
                 style: TextStyle(
                   color: Colors.indigo,
                   fontSize: 19,
