@@ -15,12 +15,22 @@ class InterestCalculator extends StatefulWidget {
 var _formKey = GlobalKey<FormState>();
 
 const List<String> _currencies = <String>['Rupees', 'Dollars', 'Pounds'];
+const List<String> _compounded = <String>[
+  'Annually',
+  'Semi',
+  'Quarterly',
+  'Monthly',
+  'Weekly',
+  'Daily'
+];
 const List<String> _givenValue = <String>['Annuity', 'Present', 'Future'];
 
 class _InterestCalculatorState extends State<InterestCalculator> {
   bool _showDataTable = false;
   final _minimumPadding = 5.0;
+
   String _dropdownValue = _currencies.first;
+  String _compoundedValue = _compounded.first;
   String _choosenGiven = _givenValue.first;
 
   var displayResult = '';
@@ -87,10 +97,10 @@ class _InterestCalculatorState extends State<InterestCalculator> {
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              width: 3,
+                              width: 1,
                               color: Colors.grey,
                             ),
-                            borderRadius: BorderRadius.circular(50.0),
+                            borderRadius: BorderRadius.circular(40.0),
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               horizontal: 16, vertical: 12),
@@ -100,17 +110,20 @@ class _InterestCalculatorState extends State<InterestCalculator> {
                         ),
                       ),
                     ),
+                    SizedBox(
+                      width: 18,
+                    ),
                     Expanded(
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        padding: EdgeInsets.only(right: 25),
                         child: DropdownMenu<String>(
                           inputDecorationTheme: InputDecorationTheme(
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                width: 3,
+                                width: 1,
                                 color: Colors.grey,
                               ),
-                              borderRadius: BorderRadius.circular(50.0),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 12),
@@ -135,47 +148,88 @@ class _InterestCalculatorState extends State<InterestCalculator> {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                  right: _minimumPadding * 5,
+                  right: _minimumPadding * 10.5,
                   left: _minimumPadding * 3,
                   top: _minimumPadding,
                   bottom: _minimumPadding,
                 ),
-                child: TextFormField(
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter rate';
-                    }
-                    return null;
-                  },
-                  controller: roiController,
-                  //for number only
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                        RegExp(r'^\d+\.?\d{0,2}')),
-                  ],
-                  style: TextStyle(color: Colors.black87),
-                  decoration: InputDecoration(
-                    errorStyle: TextStyle(
-                      color: Colors.red[900],
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 3,
-                        color: Colors.grey,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 2,
+                      child: TextFormField(
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter rate';
+                          }
+                          return null;
+                        },
+                        controller: roiController,
+                        //for number only
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'^\d+\.?\d{0,2}')),
+                        ],
+                        style: TextStyle(color: Colors.black87),
+                        decoration: InputDecoration(
+                          errorStyle: TextStyle(
+                            color: Colors.red[900],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              width: 1,
+                              color: Colors.grey,
+                            ),
+                            borderRadius: BorderRadius.circular(40.0),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                          labelText: 'Rate',
+                          hintText: 'In Percetange',
+                          border: InputBorder.none,
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(50.0),
                     ),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    labelText: 'Rate',
-                    hintText: 'In Percetange',
-                    border: InputBorder.none,
-                  ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(right: 35),
+                        child: DropdownMenu<String>(
+                          inputDecorationTheme: InputDecorationTheme(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: Colors.grey,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 12),
+                          ),
+                          initialSelection: _compoundedValue,
+                          onSelected: (String? value) {
+                            // This is called when the user selects an item.
+                            setState(() {
+                              _compoundedValue = value!;
+                            });
+                          },
+                          dropdownMenuEntries: _compounded
+                              .map<DropdownMenuEntry<String>>((String value) {
+                            return DropdownMenuEntry<String>(
+                                value: value, label: value);
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+
               // Padding(
               //   padding: EdgeInsets.only(
               //     right: _minimumPadding * 5,
@@ -205,10 +259,10 @@ class _InterestCalculatorState extends State<InterestCalculator> {
               //       ),
               //       enabledBorder: OutlineInputBorder(
               //         borderSide: BorderSide(
-              //           width: 3,
+              //           width: 1,
               //           color: Colors.grey,
               //         ),
-              //         borderRadius: BorderRadius.circular(50.0),
+              //         borderRadius: BorderRadius.circular(10.0),
               //       ),
               //       contentPadding:
               //           EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -220,7 +274,7 @@ class _InterestCalculatorState extends State<InterestCalculator> {
               // ),
               Padding(
                 padding: EdgeInsets.only(
-                  right: _minimumPadding * 5,
+                  right: _minimumPadding * 10.5,
                   left: _minimumPadding * 3,
                   top: _minimumPadding,
                   bottom: _minimumPadding,
@@ -228,6 +282,7 @@ class _InterestCalculatorState extends State<InterestCalculator> {
                 child: Row(
                   children: <Widget>[
                     Expanded(
+                      flex: 2,
                       child: TextFormField(
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
@@ -251,10 +306,10 @@ class _InterestCalculatorState extends State<InterestCalculator> {
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              width: 3,
+                              width: 1,
                               color: Colors.grey,
                             ),
-                            borderRadius: BorderRadius.circular(50.0),
+                            borderRadius: BorderRadius.circular(40.0),
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               horizontal: 16, vertical: 12),
@@ -264,17 +319,20 @@ class _InterestCalculatorState extends State<InterestCalculator> {
                         ),
                       ),
                     ),
+                    SizedBox(
+                      width: 18,
+                    ),
                     Expanded(
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 50),
+                        padding: EdgeInsets.only(right: 25),
                         child: DropdownMenu<String>(
                           inputDecorationTheme: InputDecorationTheme(
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                width: 3,
+                                width: 1,
                                 color: Colors.grey,
                               ),
-                              borderRadius: BorderRadius.circular(50.0),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 12),
@@ -297,10 +355,11 @@ class _InterestCalculatorState extends State<InterestCalculator> {
                   ],
                 ),
               ),
+
               Padding(
                 padding: EdgeInsets.only(
-                  right: _minimumPadding * 5,
-                  left: _minimumPadding * 3,
+                  right: _minimumPadding * 4,
+                  left: _minimumPadding * 4,
                   top: _minimumPadding,
                   bottom: _minimumPadding,
                 ),
@@ -310,7 +369,7 @@ class _InterestCalculatorState extends State<InterestCalculator> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 40.0, vertical: 18.0),
+                              horizontal: 40.0, vertical: 21.0),
                           shape: BeveledRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0)),
                           foregroundColor: Colors.black,
@@ -331,15 +390,15 @@ class _InterestCalculatorState extends State<InterestCalculator> {
                       ),
                     ),
                     SizedBox(
-                      width: 45,
+                      width: 7.5,
                     ),
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 40.0, vertical: 18.0),
+                              horizontal: 40.0, vertical: 21.0),
                           shape: BeveledRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
+                              borderRadius: BorderRadius.circular(70.0)),
                           foregroundColor: Colors.black,
                           backgroundColor: Colors.red,
                           elevation: 20, // Elevation
@@ -376,7 +435,7 @@ class _InterestCalculatorState extends State<InterestCalculator> {
                     Center(
                       child: Center(
                         child: Text(
-                          'F = A [ { ( 1 + i )^N - 1 } / i ]',
+                          'Formula to be returned here',
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
