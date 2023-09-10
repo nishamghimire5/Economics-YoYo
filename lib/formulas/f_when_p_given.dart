@@ -456,11 +456,11 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
     }
 
     List<DataRow> rows = [];
-
-    for (int i = 1; i <= term; i++) {
+    double prevAmount = principle;
+    for (int i = 0; i <= term; i++) {
       double amount = principle * pow((1 + (roi / 100)), i);
-      double interestValue =
-          (roi / 100) * principle * pow((1 + (roi / 100)), i - 1);
+      double interestValue = amount - prevAmount;
+
       rows.add(
         DataRow(
           cells: [
@@ -497,6 +497,7 @@ class _FWhenPGivenState extends State<FWhenPGiven> {
           ],
         ),
       );
+      prevAmount = amount;
     }
     return rows;
   }
