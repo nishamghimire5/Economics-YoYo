@@ -315,7 +315,7 @@ class _CalculationState extends State<Calculation> {
                 Text(
                   'Total Interest',
                   style: TextStyle(
-                    color: Colors.indigo,
+                    color: Colors.red[800],
                     fontSize: 19,
                     fontStyle: FontStyle.italic,
                   ),
@@ -442,7 +442,7 @@ class _CalculationState extends State<Calculation> {
                 Text(
                   'Total Interest',
                   style: TextStyle(
-                    color: Colors.indigo,
+                    color: Colors.red[800],
                     fontSize: 19,
                     fontStyle: FontStyle.italic,
                   ),
