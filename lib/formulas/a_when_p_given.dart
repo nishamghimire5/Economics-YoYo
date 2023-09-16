@@ -137,49 +137,6 @@ class _AWhenPGivenState extends State<AWhenPGiven> {
                   ),
                 ),
               ),
-              // Padding(
-              //   padding: EdgeInsets.only(
-              //     right: _minimumPadding * 5,
-              //     left: _minimumPadding * 3,
-              //     top: _minimumPadding,
-              //     bottom: _minimumPadding,
-              //   ),
-              //   child: TextFormField(
-              //     validator: (String? value) {
-              //       if (value == null || value.isEmpty) {
-              //         return 'Enter interest credit frequency';
-              //       }
-              //       return null;
-              //     },
-              //     controller: nController,
-              //     //for number only
-              //    keyboardType: TextInputType.number,
-              // inputFormatters: [
-              //   FilteringTextInputFormatter.allow(
-              //       RegExp(r'^\d+\.?\d{0,2}')),
-              // ],
-              //     style: TextStyle(color: Colors.black87),
-              //     decoration: InputDecoration(
-              //       errorStyle: TextStyle(
-              //         color: Colors.red[900],
-              //         fontWeight: FontWeight.bold,
-              //         fontSize: 15,
-              //       ),
-              //       enabledBorder: OutlineInputBorder(
-              //         borderSide: BorderSide(
-              //           width: 3,
-              //           color: Colors.grey,
-              //         ),
-              //         borderRadius: BorderRadius.circular(50.0),
-              //       ),
-              //       contentPadding:
-              //           EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              //       labelText: 'Compounds per year (n)',
-              //       hintText: 'Times',
-              //       border: InputBorder.none,
-              //     ),
-              //   ),
-              // ),
               Padding(
                 padding: EdgeInsets.only(
                   right: _minimumPadding * 5,
@@ -472,6 +429,7 @@ class _AWhenPGivenState extends State<AWhenPGiven> {
       }
       if (i == 1) {
         increasingAmount = annuity;
+        // interestValue = increasingAmount * (roi / 100);
       }
       if (i != 0 && i != term) {
         interestValue = increasingAmount * (roi / 100);
