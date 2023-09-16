@@ -63,6 +63,7 @@ class _CalculationState extends State<Calculation> {
                         bottom: _minimumPadding * 3,
                       ),
                       child: Text(
+                        //formula text written
                         'Formula:',
                         style: TextStyle(
                           fontSize: 20,
@@ -71,6 +72,7 @@ class _CalculationState extends State<Calculation> {
                       ),
                     ),
                     Center(
+                      //display formula
                       child: Text(
                         displayResult,
                         style: TextStyle(
@@ -87,6 +89,7 @@ class _CalculationState extends State<Calculation> {
                         top: _minimumPadding * 3,
                       ),
                       child: Center(
+                        //display calculations
                         child: Text(
                           _calculateTotalReturns(),
                           style: TextStyle(
@@ -98,68 +101,144 @@ class _CalculationState extends State<Calculation> {
                     Padding(
                       padding: EdgeInsets.only(
                         left: _minimumPadding * 5,
-                        bottom: _minimumPadding * 5,
+                        bottom: _minimumPadding * 1,
                         top: _minimumPadding * 1,
                       ),
-                      child: Visibility(
-                        // visible: _showDataTable,
-                        child: Text(
-                          //Schedule
-                          'Schedule:',
-                          style: TextStyle(
-                            color: Colors.lightGreen,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      child: Text(
+                        //Schedule
+                        'Schedule',
+                        style: TextStyle(
+                          color: Colors.lightGreen,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: _minimumPadding * 5,
+                        bottom: _minimumPadding * 3,
+                        top: _minimumPadding * 1,
+                      ),
+                      child: Text(
+                        //from annuity {text}
+                        'From Annuity:',
+                        style: TextStyle(
+                          color: Colors.pink[800],
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
                         ),
                       ),
                     ),
                     Center(
-                      child: Visibility(
-                        // visible: _showDataTable,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: DataTable(
-                            // dataRowMinHeight: 0, // Set dataRowHeight to 0
-                            dividerThickness: 3.0, // Set dividerThickness to 0
-                            columnSpacing: 60,
-                            columns: [
-                              DataColumn(
-                                label: const Text(
-                                  'Year',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontStyle: FontStyle.italic,
-                                    fontSize: 20,
-                                    color: Colors.deepOrange,
-                                  ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: DataTable(
+                          //data table for annuity
+                          // dataRowMinHeight: 0, // Set dataRowHeight to 0
+                          dividerThickness: 3.0, // Set dividerThickness to 0
+                          columnSpacing: 60,
+                          columns: [
+                            DataColumn(
+                              label: const Text(
+                                'Year',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 20,
+                                  color: Colors.deepOrange,
                                 ),
                               ),
-                              DataColumn(
-                                label: const Text(
-                                  'Intrest',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontStyle: FontStyle.italic,
-                                    fontSize: 20,
-                                    color: Colors.deepOrange,
-                                  ),
+                            ),
+                            DataColumn(
+                              label: const Text(
+                                'Intrest',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 20,
+                                  color: Colors.deepOrange,
                                 ),
                               ),
-                              DataColumn(
-                                label: const Text(
-                                  'Amount',
-                                  style: TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.deepOrange,
-                                  ),
+                            ),
+                            DataColumn(
+                              label: const Text(
+                                'Amount',
+                                style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.deepOrange,
                                 ),
                               ),
-                            ],
-                            rows: _buildTableRows(),
-                          ),
+                            ),
+                          ],
+                          rows: _buildTableRows(),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: _minimumPadding * 5,
+                        bottom: _minimumPadding * 3,
+                        top: _minimumPadding * 5,
+                      ),
+                      child: Text(
+                        //initial investment {text}
+                        'From initial investment:',
+                        style: TextStyle(
+                          color: Colors.pink[800],
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: DataTable(
+                          //data table 2 for initial investment
+                          // dataRowMinHeight: 0, // Set dataRowHeight to 0
+                          dividerThickness: 3.0, // Set dividerThickness to 0
+                          columnSpacing: 60,
+                          columns: [
+                            DataColumn(
+                              label: const Text(
+                                'Year',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 20,
+                                  color: Colors.deepOrange,
+                                ),
+                              ),
+                            ),
+                            DataColumn(
+                              label: const Text(
+                                'Intrest',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 20,
+                                  color: Colors.deepOrange,
+                                ),
+                              ),
+                            ),
+                            DataColumn(
+                              label: const Text(
+                                'Amount',
+                                style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.deepOrange,
+                                ),
+                              ),
+                            ),
+                          ],
+                          rows: _buildTableRows2(),
                         ),
                       ),
                     ),
@@ -173,8 +252,9 @@ class _CalculationState extends State<Calculation> {
     );
   }
 
+//from annuity---------------------------------------------------------------------------------
   List<DataRow> _buildTableRows() {
-    //schedule table from, annuity
+    double annuity = widget.amount;
     var sign = '';
     switch (widget.sign) {
       case 'Rupees':
@@ -188,9 +268,14 @@ class _CalculationState extends State<Calculation> {
         break;
     }
 
-    double annuity = widget.amount *
-        ((widget.roi / 100) * pow(1 + (widget.roi / 100), widget.term)) /
-        (pow(1 + (widget.roi / 100), widget.term) - 1);
+    if (widget.given == 'Present') {
+      annuity = widget.amount *
+          ((widget.roi / 100) * pow(1 + (widget.roi / 100), widget.term)) /
+          (pow(1 + (widget.roi / 100), widget.term) - 1);
+    } else if (widget.given == 'Future') {
+      annuity = widget.amount *
+          ((widget.roi / 100) / (pow(1 + (widget.roi / 100), widget.term) - 1));
+    }
 
     List<DataRow> rows = [];
 
@@ -299,6 +384,132 @@ class _CalculationState extends State<Calculation> {
           ),
         );
       }
+    }
+    return rows;
+  }
+
+  ///------------------------------------------------------------------------------------------
+
+//from initial investment-----------------------------------------------------------------------
+  List<DataRow> _buildTableRows2() {
+    double previousAmount = widget.amount, present = widget.amount;
+    var sign = '';
+    switch (widget.sign) {
+      case 'Rupees':
+        sign = 'Rs.';
+        break;
+      case 'Dollars':
+        sign = '\$';
+        break;
+      case 'Pounds':
+        sign = '£';
+        break;
+    }
+
+    if (widget.given == 'Future') {
+      previousAmount =
+          present = widget.amount * pow((1 + widget.roi / 100), (-widget.term));
+    } else if (widget.given == 'Annuity') {
+      previousAmount = present = widget.amount *
+          ((pow(1 + (widget.roi / 100), widget.term) - 1) /
+              ((widget.roi / 100) * pow(1 + (widget.roi / 100), widget.term)));
+    }
+
+    List<DataRow> rows = [];
+
+    double profitPercentage = 0;
+    double totalInterest = 0;
+
+    for (int i = 0; i <= widget.term + 1; i++) {
+      double amount = present * pow((1 + (widget.roi / 100)), i);
+      double interestValue = amount - previousAmount;
+
+      if (i <= widget.term) {
+        totalInterest += interestValue;
+      }
+
+      if (i == widget.term) {
+        profitPercentage =
+            ((totalInterest) / present) * 100; // Calculate profit percentage
+      }
+
+      if (i == (widget.term + 1)) {
+        // Add last row to display total interest
+        rows.add(
+          DataRow(
+            cells: [
+              DataCell(
+                Text(
+                  'Total Interest',
+                  style: TextStyle(
+                    color: Colors.indigo,
+                    fontSize: 19,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+              DataCell(
+                Text(
+                  '$sign ${totalInterest.toStringAsFixed(2)}', // Display total interest
+                  style: TextStyle(
+                    color: Colors.green[800],
+                    fontSize: 19,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+              DataCell(
+                Text(
+                  '${profitPercentage.toStringAsFixed(2)}%', // Calculate and display profit percentage
+                  style: TextStyle(
+                    color: Colors.green[800],
+                    fontSize: 19,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      } else {
+        rows.add(
+          DataRow(
+            cells: [
+              DataCell(
+                Text(
+                  i.toString(),
+                  style: TextStyle(
+                    color: Colors.indigo,
+                    fontSize: 19,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+              DataCell(
+                Text(
+                  '$sign ${interestValue.toStringAsFixed(2)}',
+                  style: TextStyle(
+                    color: Colors.indigo,
+                    fontSize: 19,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+              DataCell(
+                Text(
+                  '$sign ${amount.toStringAsFixed(2)}',
+                  style: TextStyle(
+                    color: Colors.indigo,
+                    fontSize: 19,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+      previousAmount = amount;
     }
     return rows;
   }
