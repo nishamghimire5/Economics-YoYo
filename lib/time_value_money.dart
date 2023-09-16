@@ -1,16 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'package:engineering_economics/formulas/f_when_p_given.dart';
 import 'package:engineering_economics/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:engineering_economics/formulas/simple_interest.dart';
 
-import 'formulas/a_when_f_given.dart';
-import 'formulas/a_when_p_given.dart';
-import 'formulas/f_when_a_given.dart';
 import 'formulas/intrest_calculators.dart';
-import 'formulas/p_when_a_given.dart';
-import 'formulas/p_when_f_givven.dart';
 
 //default widget -if nothing returned
 class DefaultWidget extends StatelessWidget {
@@ -37,13 +31,7 @@ class TimeValueMoney extends StatefulWidget {
 class _TimeValueMoneyState extends State<TimeValueMoney> {
   final List<String> _chapterTitles = [
     "1. Simple Interest",
-    "2. ( F | P , I % , N )",
-    "3. ( P | F , I % , N )",
-    "4. ( F | A , I % , N )",
-    "5. ( A | F , I % , N )",
-    "6. ( P | A , I % , N )",
-    "7. ( A | P , I % , N )",
-    "8. Intrest Calculator",
+    "2. Intrest Calculator",
   ];
 
   @override
@@ -81,21 +69,8 @@ class _TimeValueMoneyState extends State<TimeValueMoney> {
                                 if (title == _chapterTitles[0]) {
                                   return SimpleIntrestCalculator();
                                 } else if (title == _chapterTitles[1]) {
-                                  return FWhenPGiven();
-                                } else if (title == _chapterTitles[2]) {
-                                  return PWhenFGiven();
-                                } else if (title == _chapterTitles[3]) {
-                                  return FWhenAGiven();
-                                } else if (title == _chapterTitles[4]) {
-                                  return AWhenFGiven();
-                                } else if (title == _chapterTitles[5]) {
-                                  return PWhenAGiven();
-                                } else if (title == _chapterTitles[6]) {
-                                  return AWhenPGiven();
-                                } else if (title == _chapterTitles[7]) {
                                   return InterestCalculator();
                                 }
-
                                 return DefaultWidget();
                               },
                             ),
